@@ -34,13 +34,13 @@ class Monster {
             nearlyLow = nearlyLow - _maxColumn;
         }
         for(let i = monsterIdx; i>=nearlyLow;i--){
-            if(currentMonsters[i].folder === monsterName)
+            if(currentMonsters[i] && currentMonsters[i].folder === monsterName)
                 result.push(i);
             else
                 break;
         }
         for(let i = monsterIdx + 1; i< nearlyLow + _maxColumn;i++){
-            if(currentMonsters[i].folder === monsterName)
+            if(currentMonsters[i] && currentMonsters[i].folder === monsterName)
                 result.push(i);
             else
                 break;
@@ -50,13 +50,13 @@ class Monster {
         let subresult = [];
         //Check Vertical
         for(let i = monsterIdx; i>=0;i-=_maxRow){
-            if(currentMonsters[i].folder === monsterName)
+            if(currentMonsters[i] && currentMonsters[i].folder === monsterName)
             subresult.push(i);
             else
                 break;
         }
         for(let i = monsterIdx + _maxRow; i< _maxRow * _maxColumn; i += _maxRow){
-            if(currentMonsters[i].folder === monsterName)
+            if(currentMonsters[i] && currentMonsters[i].folder === monsterName)
                 subresult.push(i);
             else
                 break;
@@ -128,6 +128,7 @@ class Monster {
         this.monsterHtml.addEventListener('dragstart',this.dragMonster);   
         this.monsterHtml.addEventListener('dragend',this.dropMonster);    
         this.monsterHtml.addEventListener('dragover',(event)=>{this.dragOverMonster(event)});  
+        this.destoySameMonsters(this.checkThreeInRow(this.monsterHtml));
         return this.monsterHtml;  
     }
     showInformation(){
