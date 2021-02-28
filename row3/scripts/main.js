@@ -1,10 +1,10 @@
 const _maxRow = 6;
 const _maxColumn = 6;
 const monstersArray = [
-    {name:'cat',maxFrame:13,folder:'Сat/Сat'},
-    //{name:'lizard',maxFrame:8,folder:'Lizard/Lizard'},
+    {name:'cat',maxFrame:13,folder:'Cat/Cat'},
+    {name:'lizard',maxFrame:8,folder:'Lizard/Lizard'},
     {name:'octopus',maxFrame:9,folder:'Octopus/Octopus'},
-    //{name:'owl',maxFrame:13,folder:'Owl/Owl'},
+    {name:'owl',maxFrame:13,folder:'Owl/Owl'},
     {name:'pig',maxFrame:13,folder:'Pig/Pig'},
     {name:'rabbit',maxFrame:13,folder:'Rabbit/Rabbit'}];
 let monsterDragging;
