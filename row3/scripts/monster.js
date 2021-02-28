@@ -24,28 +24,55 @@ class Monster {
     dropMonster(event){
         event.target.classList.remove("dragged");
     }
-    checkThreeInRow(){
+    checkThreeInRow(monster){
         let result = [];
-        for(let i = 0; i< currentMonsters.length; i+= _maxColumn){
-            if(currentMonsters[i].folder === currentMonsters[i+1].folder && currentMonsters[i].folder === currentMonsters[i+2].folder){
-                result.push(i,i+1,i+2);
-                return result;
-            }
+        const monsterIdx = this.getMonsterIdxInArray(monster);
+        const monsterName = currentMonsters[monsterIdx].folder;
+        //Check Horizontal
+        let nearlyLow = _maxColumn * _maxRow;
+        while(nearlyLow > monsterIdx){
+            nearlyLow = nearlyLow - _maxColumn;
         }
-        for(let i = 0; i< _maxRow; i++){
-            if(currentMonsters[i].folder === currentMonsters[i+_maxRow].folder && currentMonsters[i].folder === currentMonsters[i+_maxRow*2].folder){
-                result.push(i, i+_maxRow, i+_maxRow*2);
-                return result;
-            }
+        for(let i = monsterIdx; i>=nearlyLow;i--){
+            if(currentMonsters[i].folder === monsterName)
+                result.push(i);
+            else
+                break;
+        }
+        for(let i = monsterIdx + 1; i< nearlyLow + _maxColumn;i++){
+            if(currentMonsters[i].folder === monsterName)
+                result.push(i);
+            else
+                break;
+        }
+        if(result.length < 3)
+            result = [];
+        let subresult = [];
+        //Check Vertical
+        for(let i = monsterIdx; i>=0;i-=_maxRow){
+            if(currentMonsters[i].folder === monsterName)
+            subresult.push(i);
+            else
+                break;
+        }
+        for(let i = monsterIdx + _maxRow; i< _maxRow * _maxColumn; i += _maxRow){
+            if(currentMonsters[i].folder === monsterName)
+                subresult.push(i);
+            else
+                break;
+        }
+        if(subresult.length >2){
+            subresult.forEach(element => {
+                result.push(element)
+            });
         }
         return result;
     }
     destoySameMonsters(arrayIdx){
         if(arrayIdx.length === 0)
             return;
-        console.log(arrayIdx);
         for(let i = 0; i< arrayIdx.length;i++){
-            //clearInterval(this.interval) 
+            clearInterval(currentMonsters[arrayIdx[i]].interval) 
             currentMonsters[arrayIdx[i]].monsterHtml.style.backgroundImage =`url(./img/monsters/${this.folder}.png)`;
             setTimeout(()=>{
                 currentMonsters[arrayIdx[i]].monsterHtml.remove();
@@ -74,7 +101,8 @@ class Monster {
             if(dragComplete === 1)
                 return false;
             this.changeMonsterInArray(monsterDragging, this.monsterHtml);
-            this.destoySameMonsters(this.checkThreeInRow());
+            this.destoySameMonsters(this.checkThreeInRow(this.monsterHtml));
+            this.destoySameMonsters(this.checkThreeInRow(monsterDragging));
             this.monsterHtml.style.top =  monsterDragging.style.top;
             this.monsterHtml.style.left = monsterDragging.style.left;
             monsterDragging.style.top = hoveredMonsterTop;
@@ -90,12 +118,12 @@ class Monster {
         this.monsterHtml.style.top =`${this.top}px`;
         this.monsterHtml.style.left =`${this.left}px`;
         this.monsterHtml.setAttribute('draggable', true)
-        setInterval(()=>{
+        this.interval = setInterval(()=>{
             this.monsterHtml.style.backgroundImage =`url(./img/monsters/${this.folder}_${this.getMonsterFrame()}.png)`;            
-        },1700);
+        },3000);
         this.monsterHtml.addEventListener('dragstart',this.dragMonster);   
         this.monsterHtml.addEventListener('dragend',this.dropMonster);    
-        this.monsterHtml.addEventListener('dragover',(event)=>{this.dragOverMonster(event)});      
+        this.monsterHtml.addEventListener('dragover',(event)=>{this.dragOverMonster(event)});  
         return this.monsterHtml;  
     }
     showInformation(){
