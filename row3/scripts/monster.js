@@ -71,12 +71,16 @@ class Monster {
     destoySameMonsters(arrayIdx){
         if(arrayIdx.length === 0)
             return;
+        const pointsCounter = document.getElementById("id_points");
+        pointsCounter.innerHTML = parseInt(pointsCounter.innerHTML) + arrayIdx.length;
+        
         for(let i = 0; i< arrayIdx.length;i++){
             clearInterval(currentMonsters[arrayIdx[i]].interval) 
             currentMonsters[arrayIdx[i]].monsterHtml.style.backgroundImage =`url(./img/monsters/${this.folder}.png)`;
             setTimeout(()=>{
                 currentMonsters[arrayIdx[i]].monsterHtml.remove();
                 currentMonsters[arrayIdx[i]] = null;
+                
             },400);            
         }
     }

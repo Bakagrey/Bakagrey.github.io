@@ -33,6 +33,6 @@ const initMainTable = () => {
             mainTable.appendChild(cell);
         }
     }
-    setInterval(addMonsters,100)
+    setInterval(addMonsters,10)
 }
 initMainTable();
